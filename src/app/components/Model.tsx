@@ -1,11 +1,12 @@
 'use client'
 
 import { useGLTF } from '@react-three/drei'
-import { useFrame, GroupProps } from '@react-three/fiber'
+import { useFrame } from '@react-three/fiber'
 import { memo, useRef } from 'react'
 import * as THREE from 'three'
 
-interface ModelProps extends GroupProps {
+// Use React.ComponentProps<'group'> for group props in react-three-fiber
+interface ModelProps extends React.ComponentProps<'group'> {
   path?: string
 }
 

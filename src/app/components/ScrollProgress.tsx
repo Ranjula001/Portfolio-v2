@@ -23,7 +23,7 @@ export default function ScrollProgress() {
         scaleX: scrollYProgress,
       }}
       initial={{ scaleX: 0 }}
-      animate={{ scaleX: hasScrolled ? scrollYProgress : 0 }}
+      animate={{ scaleX: hasScrolled ? 1 : 0 }}
       transition={{ ease: 'easeOut', duration: 0.2 }}
     />
   )
