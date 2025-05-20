@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Geostar+Fill&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.cdnfonts.com/css/handwriting');
+@import url('https://fonts.cdnfonts.com/css/druk-trial');
+
+
+/* --- Tailwind v4 --- */
+@import "tailwindcss";                /* load the framework */
+@config "../../tailwind.config.js";   /* tell Tailwind where the config lives */
+
+/* --- custom CSS --- */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@font-face {
+  font-family: 'Maelstrom';
+  src: url('../../public/fonts/Test Maelstrom/test-maelstrom-bold.woff2') format('opentype');
+}
+
+@font-face {
+  font-family: 'Migra-Extrabold';
+  src: url('../../public/fonts/Migra/Migra-Extrabold.woff2') format('opentype');
+}
+
+@font-face {
+  font-family: 'Migra-ExtraLight';
+  src: url('../../public/fonts/Migra/Migra-Extralight.woff2') format('opentype');
+}
+
+@font-face {
+  font-family: 'Tusker-Grotesk';
+  src: url('../../public/fonts/Tasker/TuskerGrotesk.woff2') format('opentype');
+}
