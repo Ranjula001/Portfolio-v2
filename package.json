@@ -2,11 +2,13 @@
   "name": "my-portfolio-3d",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://ranjula001.github.io/Portfolio-v2",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "next build && next export && gh-pages -d out"
   },
   "dependencies": {
     "@nextui-org/react": "^2.6.11",
@@ -14,6 +16,7 @@
     "@react-three/fiber": "^9.1.2",
     "@react-three/postprocessing": "^3.0.4",
     "framer-motion": "^12.12.1",
+    "gh-pages": "^6.3.0",
     "lucide-react": "^0.511.0",
     "next": "15.3.2",
     "react": "^19.0.0",
