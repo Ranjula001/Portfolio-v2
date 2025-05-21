@@ -38,8 +38,9 @@ export default function Scene() {
 
         <OrbitControls
           makeDefault // tells R3F to use Orbit as the active controller
-          enablePan={true}
+          enablePan={false}
           enableZoom={false}
+          enableRotate={false}
           minDistance={3}
           maxDistance={10}
         />
