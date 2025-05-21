@@ -5,10 +5,9 @@
   "homepage": "https://ranjula001.github.io/Portfolio-v2",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build && next export",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "deploy": "next build && next export && gh-pages -d out"
+    "lint": "next lint"
   },
   "dependencies": {
     "@nextui-org/react": "^2.6.11",
