@@ -1,20 +1,29 @@
 export const projects = [
   {
-    title: 'VIBE (ui-design)',
-    description: 'Social media platform idea',
-    image: '/images/vibe.png',
-    url: '',
+    title: "9Tailed ERP Systems",
+    description:
+      "Multi-tenant SaaS platform for hospitality businesses with booking, billing, RBAC, dashboards, and secure organization-scoped data.",
+    image: "/images/bimbara.png",
+    url: "",
+    stack: ["Next.js", "React", "TypeScript", "Supabase", "Zustand"],
+    category: "Multi-Tenant SaaS Platform",
   },
   {
-    title: 'FITGENIUS',
-    description: 'AI-powered fitness planner research',
-    image: '/images/fitgenius.png',
-    url: 'https://fit-genius-five.vercel.app/',
+    title: "PortfolioCraft",
+    description:
+      "No-code portfolio builder with drag-and-drop editing, theme controls, export features, and an AI assistant for portfolio copy.",
+    image: "/images/vibe.png",
+    url: "",
+    stack: ["React", "@dnd-kit", "html2canvas", "jsPDF", "AI Assistant"],
+    category: "No-Code Portfolio Builder",
   },
   {
-    title: 'BIMBARA Booking',
-    description: 'Room booking system',
-    image: '/images/bimbara.png',
-    url: '',
+    title: "FitGenius Research Showcase",
+    description:
+      "Responsive research showcase for an AI-powered fitness concept with motion-driven storytelling and clear presentation of product research.",
+    image: "/images/fitgenius.png",
+    url: "https://fit-genius-five.vercel.app/",
+    stack: ["React", "Vite", "Framer Motion"],
+    category: "Research Presentation Website",
   },
-]
+];

@@ -6,16 +6,22 @@ import { motion, useAnimation } from 'framer-motion'
 export default function AnimatedCursor() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [isHovering, setIsHovering] = useState(false)
+  const [enabled, setEnabled] = useState(false)
   const controls = useAnimation()
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY })
+    const hasFinePointer = window.matchMedia('(pointer: fine)').matches
+    setEnabled(hasFinePointer)
+
+    if (!hasFinePointer) return
+
+    const handleMouseMove = (event: MouseEvent) => {
+      setMousePos({ x: event.clientX, y: event.clientY })
     }
 
     const checkHover = () => {
       const hovered = document.querySelector('.hover-trigger:hover')
-      setIsHovering(!!hovered)
+      setIsHovering(Boolean(hovered))
     }
 
     window.addEventListener('mousemove', handleMouseMove)
@@ -31,15 +37,17 @@ export default function AnimatedCursor() {
 
   useEffect(() => {
     controls.start({
-      scale: isHovering ? 2 : 1,
-      backgroundColor: isHovering ? 'rgba(255,255,255,0.2)' : 'transparent',
-      borderColor: isHovering ? 'white' : 'white',
+      scale: isHovering ? 1.9 : 1,
+      backgroundColor: isHovering ? 'rgba(243,219,199,0.14)' : 'transparent',
+      borderColor: isHovering ? '#f3dbc7' : 'rgba(255,255,255,0.6)',
     })
-  }, [isHovering, controls])
+  }, [controls, isHovering])
+
+  if (!enabled) return null
 
   return (
     <motion.div
-      className="pointer-events-none fixed z-[9999] top-0 left-0 h-6 w-6 rounded-full border"
+      className="pointer-events-none fixed left-0 top-0 z-[120] h-6 w-6 rounded-full border"
       animate={{
         x: mousePos.x - 12,
         y: mousePos.y - 12,
@@ -51,10 +59,7 @@ export default function AnimatedCursor() {
         mass: 0.6,
       }}
     >
-      <motion.div
-        animate={controls}
-        className="w-full h-full rounded-full border"
-      />
+      <motion.div animate={controls} className="h-full w-full rounded-full border" />
     </motion.div>
   )
 }

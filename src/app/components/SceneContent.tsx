@@ -2,27 +2,33 @@
 
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { useScroll } from '@react-three/drei'
-import Model from './Model'
 import * as THREE from 'three'
+import Model from './Model'
 
-export default function SceneContent() {
+interface SceneContentProps {
+  progress: number
+}
+
+export default function SceneContent({ progress }: SceneContentProps) {
   const group = useRef<THREE.Group>(null!)
-  const scroll = useScroll()
 
-  useFrame(() => {
-    const offset = scroll.offset // scroll progress between 0 and 1
+  useFrame((_, delta) => {
+    if (!group.current) return
 
-    // Animate model rotation and position based on scroll
-    if (group.current) {
-      group.current.rotation.y = offset * Math.PI * 2
-      group.current.position.y = -offset * 2 + 1
-    }
+    const targetRotationY = Math.PI / 2 + progress * Math.PI * 1.35
+    const targetRotationX = Math.sin(progress * Math.PI) * 0.18
+    const targetY = 0.8 - progress * 2.6
+    const targetX = Math.sin(progress * Math.PI * 2) * 0.35
+
+    group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, targetRotationY, delta * 2.5)
+    group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, targetRotationX, delta * 1.8)
+    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, targetY, delta * 2)
+    group.current.position.x = THREE.MathUtils.lerp(group.current.position.x, targetX, delta * 1.6)
   })
 
   return (
-    <group ref={group} rotation={[0, Math.PI / 2, 0]}>
-      <Model scale={0.1} position={[0, -0.5, 0]} />
+    <group ref={group}>
+      <Model scale={0.1} position={[0, -0.4, 0]} />
     </group>
   )
 }

@@ -4,12 +4,13 @@
   "private": true,
   "homepage": "https://ranjula001.github.io/Portfolio-v2",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@nextui-org/react": "^2.6.11",
     "@react-three/drei": "^10.0.8",
     "@react-three/fiber": "^9.1.2",
@@ -17,6 +18,7 @@
     "@vercel/speed-insights": "^1.2.0",
     "framer-motion": "^12.12.1",
     "gh-pages": "^6.3.0",
+    "gsap": "^3.15.0",
     "lucide-react": "^0.511.0",
     "next": "15.3.2",
     "react": "^19.0.0",

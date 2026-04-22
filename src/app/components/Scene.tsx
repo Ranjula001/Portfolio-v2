@@ -1,262 +1,409 @@
 "use client";
 
+import { Suspense, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { Canvas } from "@react-three/fiber";
-import { ScrollControls, Scroll, OrbitControls } from "@react-three/drei";
-import { Suspense } from "react";
+import { Environment } from "@react-three/drei";
+import { Button } from "@nextui-org/react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  ArrowUpRight,
+  BriefcaseBusiness,
+  GraduationCap,
+  ShieldCheck,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 import SceneContent from "./SceneContent";
 import ProjectsSection from "./ProjectsSection";
 import Loader from "./Loader";
-import { motion } from "framer-motion";
-//import Counter from "./Counter";
-import DateCounter from "./DateCounter";
-import { Button } from "@nextui-org/react";
 import Navbar from "./Navbar";
 import AnimatedCursor from "./AnimatedCursor";
 import MagneticButton from "./MagneticButton";
-import FadeInSection from "./FadeInSection";
 import ScrollProgress from "./ScrollProgress";
 import ScrollToTop from "./ScrollToTop";
 import Footer from "./Footer";
+import CommandMenu from "./CommandMenu";
+import ContactForm from "./ContactForm";
+import {
+  certifications,
+  education,
+  experience,
+  focusAreas,
+  heroHighlights,
+  personalInfo,
+  quickFacts,
+  skillGroups,
+} from "../data/portfolio";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function Scene() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const updateScroll = () => {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+      setScrollProgress(Math.min(1, Math.max(0, progress)));
+    };
+
+    updateScroll();
+    window.addEventListener("scroll", updateScroll, { passive: true });
+    window.addEventListener("resize", updateScroll);
+    return () => {
+      window.removeEventListener("scroll", updateScroll);
+      window.removeEventListener("resize", updateScroll);
+    };
+  }, []);
+
+  useGSAP(
+    () => {
+      gsap.fromTo(
+        ".reveal-up",
+        { opacity: 0, y: 60 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+          },
+        }
+      );
+
+      gsap.utils.toArray<HTMLElement>(".reveal-section").forEach((section) => {
+        gsap.fromTo(
+          section.querySelectorAll(".reveal-item"),
+          { opacity: 0, y: 48 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            stagger: 0.08,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 78%",
+            },
+          }
+        );
+      });
+
+      gsap.utils.toArray<HTMLElement>(".parallax-card").forEach((card) => {
+        gsap.to(card, {
+          yPercent: -10,
+          ease: "none",
+          scrollTrigger: {
+            trigger: card,
+            scrub: true,
+          },
+        });
+      });
+    },
+    { scope: containerRef }
+  );
+
+  const ctaPills = ["Frontend Development", "SaaS Product UI", "Creative Engineering"];
+
   return (
     <>
       <AnimatedCursor />
       <ScrollProgress />
       <Navbar />
+      <CommandMenu />
       <Loader />
+      <ScrollToTop />
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.8 }}
-        className="h-screen w-screen fixed inset-0"
-      />
-      <Canvas key="main-canvas" camera={{ position: [0, 0, 5], fov: 50 }}>
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[5, 5, 5]} />
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(123,97,255,0.18),transparent_28%),radial-gradient(circle_at_80%_20%,rgba(243,219,199,0.18),transparent_26%),linear-gradient(180deg,#07090d_0%,#0b0f17_52%,#090a10_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.03)_0%,transparent_24%,transparent_76%,rgba(255,255,255,0.02)_100%)]" />
+        <Canvas camera={{ position: [0, 0, 5], fov: 42 }} className="pointer-events-none">
+          <ambientLight intensity={1.15} />
+          <directionalLight position={[2, 4, 5]} intensity={2.2} />
+          <spotLight position={[-3, 5, 4]} intensity={1.4} color="#f3dbc7" />
+          <Suspense fallback={null}>
+            <SceneContent progress={scrollProgress} />
+            <Environment preset="city" />
+          </Suspense>
+        </Canvas>
+      </div>
 
-        <OrbitControls
-          makeDefault // tells R3F to use Orbit as the active controller
-          enablePan={false}
-          enableZoom={false}
-          enableRotate={false}
-          minDistance={3}
-          maxDistance={10}
-        />
+      <div ref={containerRef} className="relative z-10">
+        <section
+          id="hero"
+          className="reveal-section mx-auto flex min-h-screen w-full max-w-7xl flex-col justify-end px-4 pb-12 pt-24 sm:pb-16 sm:pt-28 md:px-8 md:pb-20"
+        >
+          <div className="grid items-end gap-6 sm:gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="reveal-item order-2 lg:order-1">
+              <div className="mb-4 inline-flex max-w-full rounded-full border border-white/10 bg-white/6 px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-[#f3dbc7] backdrop-blur-md sm:mb-5 sm:px-4 sm:text-[11px] sm:tracking-[0.26em]">
+                Junior Developer / UI-UX minded frontend builder
+              </div>
+              <h1 className="font-drukXXCondTrial text-[52px] uppercase leading-[0.88] text-white sm:text-[84px] md:text-[132px] lg:text-[172px]">
+                Ranjula
+                <span className="block text-[#f3dbc7]">Ilukpitiya</span>
+              </h1>
+              <p className="mt-5 max-w-2xl text-sm leading-7 text-white/75 sm:text-base sm:leading-8 md:mt-6 md:text-xl">
+                {personalInfo.summary}
+              </p>
 
-        <Suspense fallback={null}>
-          <ScrollControls pages={4.5} damping={0.25}>
-            <Scroll>
-              <SceneContent />
-            </Scroll>
-
-            <Scroll html>
-              <FadeInSection>
-                <div className="cursor-none fixed top-0 left-0 w-full h-screen flex mt-8 px-8">
-                  <DateCounter />
-                </div>
-                {/* 1: Landing */}
-                <div className="text-start pt-32 md:pt-96">
-                  <span className="text-[#f3dbc7] text-lg sm:text-xl md:text-2xl lg:text-4xl font-migraExtrabold">
-                    creative
-                  </span>
-                  <motion.div className="text-[#f5eee6] text-[60px] sm:text-[100px] md:text-[180px] lg:text-[240px] font-drukXXCondTrial uppercase leading-none">
-                    <span className="block">Designer</span>
-                    <span className="block">Developer</span>
-                  </motion.div>
-                </div>
-              </FadeInSection>
-
-              {/* 2: Date/Stat Counter */}
-              {/* <section className="snap-start h-screen w-full flex flex-col items-center justify-center text-white">
-                <div className="text-6xl font-bold mb-4">
-                  <Counter end={5} label="Years Experience" />
-                </div>
-                <div className="text-6xl font-bold mb-4">
-                  <Counter end={20} label="Projects Completed" />
-                </div>
-                <div className="text-6xl font-bold">
-                  <Counter end={1000} label="Cups of Tea" />
-                </div>
-              </section> */}
-
-              {/* 3: Hello I'm Ranjula */}
-              <FadeInSection
-                id="about"
-                className="mx-auto mt-32 md:mt-72 px-4 md:px-0"
-              >
-                <motion.div
-                  initial={{ opacity: 0, y: -50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1 }}
-                >
-                  <MagneticButton>
-                    <div className="flex flex-col md:grid md:grid-cols-2 gap-8 md:space-x-20">
-                      <div className="md:pl-20">
-                        <div className="md:pr-24">
-                          <p className="font-hand-written text-[28px] md:text-[40px] lg:text-[90px] uppercase leading-tight text-[#f5eee6]">
-                            Hello. I’m Ranjula
-                          </p>
-                          <p className="font-migraExtrabold text-lg md:text-xl text-[#f3dbc7]">
-                            Ranjula Ilukpitiya — Designer. Developer. Dreamer.
-                          </p>
-                        </div>
-
-                        <FadeInSection delay={0.3}>
-                          <p className="text-base md:text-2xl text-[#f5eee6] font-hand-written mt-6 leading-relaxed max-w-2xl">
-                            I craft{" "}
-                            <span className="text-audi-purple font-semibold">
-                              digital experiences
-                            </span>{" "}
-                            where design meets code. Whether it’s a startup
-                            dashboard, an e-commerce interface, or a personal 3D
-                            web journey — I aim to build things that feel{" "}
-                            <em>alive</em>.<br />
-                            <br />
-                            With a focus on minimal aesthetics, responsiveness,
-                            and micro-interactions, I bring brands to life
-                            through clean, intuitive UIs. My stack is built on
-                            React, Tailwind, Three.js, and a touch of rhythm
-                            from my guitar. 
-                            <br />
-                            <br />I don’t just build websites — I build moments.
-                          </p>
-                        </FadeInSection>
-                      </div>
-                    </div>
+              <div className="mt-6 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
+                {ctaPills.map((item) => (
+                  <MagneticButton key={item}>
+                    <button
+                      type="button"
+                      className="hover-trigger rounded-full border border-white/12 bg-white/6 px-3 py-2.5 text-[10px] uppercase tracking-[0.14em] text-white/80 backdrop-blur-md transition-colors hover:border-[#f3dbc7] hover:text-white sm:px-4 sm:py-3 sm:text-xs sm:tracking-[0.18em]"
+                    >
+                      {item}
+                    </button>
                   </MagneticButton>
-                </motion.div>
-              </FadeInSection>
+                ))}
+              </div>
 
-              {/* 4: Projects */}
-              <ProjectsSection />
+              <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-4">
+                <MagneticButton>
+                  <Button
+                    as="a"
+                    href="#works"
+                    className="hover-trigger w-full rounded-full bg-[#f3dbc7] px-6 py-5 text-sm font-semibold uppercase tracking-[0.18em] text-black sm:w-auto sm:py-6"
+                  >
+                    View Projects
+                  </Button>
+                </MagneticButton>
+                <MagneticButton>
+                  <Button
+                    as="a"
+                    href={personalInfo.resume}
+                    target="_blank"
+                    className="hover-trigger w-full rounded-full border border-white/12 bg-white/5 px-6 py-5 text-sm font-semibold uppercase tracking-[0.18em] text-white sm:w-auto sm:py-6"
+                  >
+                    Resume
+                  </Button>
+                </MagneticButton>
+              </div>
+            </div>
 
-              {/* 5: Work Experience */}
-              <FadeInSection
-                className="w-full px-4 md:px-12 py-24 text-[#f5eee6]"
-                id="experience"
+            <div className="order-1 grid gap-4 sm:gap-5 lg:order-2">
+              <div className="parallax-card reveal-item relative overflow-hidden rounded-[28px] border border-white/10 bg-white/7 p-2.5 backdrop-blur-xl sm:rounded-[36px] sm:p-3">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_48%)]" />
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[28px]">
+                  <Image
+                    src="/images/graduation-portrait.jpg"
+                    alt="Ranjula Ilukpitiya graduation portrait"
+                    fill
+                    priority
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-[linear-gradient(180deg,transparent_0%,rgba(6,9,14,0.88)_100%)] p-4 sm:p-5">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-[#f3dbc7] sm:text-xs sm:tracking-[0.24em]">Featured portrait</p>
+                    <p className="mt-2 text-base text-white sm:text-lg">A human-centered portfolio with code, design, and motion in balance.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
+                {quickFacts.map((fact) => (
+                  <div
+                    key={fact.label}
+                    className="reveal-item rounded-[24px] border border-white/10 bg-white/7 p-4 backdrop-blur-xl sm:rounded-[28px] sm:p-5"
+                  >
+                    <p className="font-drukXXCondTrial text-3xl uppercase text-white sm:text-4xl md:text-5xl">{fact.value}</p>
+                    <p className="mt-2 text-xs uppercase tracking-[0.14em] text-white/55 sm:text-sm sm:tracking-[0.18em]">{fact.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="about" className="reveal-section mx-auto max-w-7xl px-4 py-20 sm:py-24 md:px-8">
+          <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="reveal-item rounded-[28px] border border-white/10 bg-black/28 p-6 backdrop-blur-xl sm:rounded-[36px] sm:p-8">
+              <p className="text-sm uppercase tracking-[0.24em] text-[#f3dbc7]">About</p>
+              <h2 className="mt-4 font-drukXXCondTrial text-4xl uppercase leading-none text-white sm:text-5xl md:text-7xl">
+                Clean systems.
+                <span className="block text-[#f3dbc7]">Human UI.</span>
+              </h2>
+              <p className="mt-5 text-sm leading-7 text-white/72 sm:mt-6 sm:text-base sm:leading-8 md:text-lg">
+                I enjoy building product interfaces that feel premium without becoming noisy. The goal is always
+                clarity first, then motion, depth, and personality in the right places.
+              </p>
+            </div>
+
+            <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
+              {focusAreas.map((item, index) => {
+                const icons = [Sparkles, BriefcaseBusiness, Zap, ShieldCheck];
+                const Icon = icons[index % icons.length];
+                return (
+                  <div
+                    key={item}
+                    className="reveal-item rounded-[24px] border border-white/10 bg-white/7 p-5 backdrop-blur-xl sm:rounded-[32px] sm:p-6"
+                  >
+                    <Icon className="h-5 w-5 text-[#f3dbc7]" />
+                    <p className="mt-4 text-base leading-7 text-white/80 sm:mt-6 sm:text-lg sm:leading-8">{item}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section id="skills" className="reveal-section mx-auto max-w-7xl px-4 py-20 sm:py-24 md:px-8">
+          <div className="reveal-item mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[#f3dbc7]">Capabilities</p>
+              <h2 className="font-drukXXCondTrial text-4xl uppercase leading-none text-white sm:text-5xl md:text-7xl">
+                Modern Stack
+              </h2>
+            </div>
+            <p className="max-w-xl text-sm text-white/70 md:text-base">
+              Built for responsive product interfaces, scalable components, and shipping quickly without losing design quality.
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {skillGroups.map((group) => (
+              <div
+                key={group.title}
+                className="reveal-item rounded-[24px] border border-white/10 bg-black/28 p-5 backdrop-blur-xl sm:rounded-[32px] sm:p-6"
               >
-                <h2 className="text-4xl md:text-6xl font-drukXXCondTrial uppercase mb-12 text-center">
-                  Work Experience
-                </h2>
-                <div className="max-w-4xl mx-auto space-y-12">
-                  {/* Codezilla Internship */}
-                  <div>
-                    <p className="text-2xl font-bold mb-1">
-                      Frontend Engineer Intern — Codezilla
-                    </p>
-                    <p className="text-sm text-[#cfcfcf] mb-4">
-                      Remote, Sri Lanka — 2024–2025
-                    </p>
-
-                    <ul className="list-disc ml-6 space-y-2 text-sm md:text-base leading-relaxed">
-                      <li>
-                        <strong>Mealprep:</strong> Developed full web platform +
-                        admin dashboard with React, Redux, and REST APIs.
-                      </li>
-                      <li>
-                        <strong>Roshan-Ads Dashboard:</strong> Created intuitive
-                        front-end UI with TypeScript, Ant Design, and Tailwind
-                        CSS.
-                      </li>
-                      <li>
-                        <strong>Crush.lk Dashboard:</strong> Worked directly
-                        with the client to gather requirements and deliver
-                        polished, responsive UIs.
-                      </li>
-                      <li>
-                        Integrated image upload, pagination, and chart
-                        visualizations using React Hook Form and Recharts.
-                      </li>
-                      <li>
-                        Collaborated in Agile sprints, handled CRUD features,
-                        and resolved real-world API and layout issues.
-                      </li>
-                      <li>
-                        Enhanced UX using Framer Motion and custom animations.
-                      </li>
-                    </ul>
-
-                    <p className="text-sm mt-4">
-                      <strong>Tools:</strong> React.js, TypeScript, Tailwind,
-                      Ant Design, REST APIs, Postman, Swagger, Git, Vite
-                    </p>
-                  </div>
-
-                  {/* Freelance */}
-                  <div>
-                    <p className="text-2xl font-bold mb-1">
-                      Freelance Web Designer
-                    </p>
-                    <p className="text-sm text-[#cfcfcf] mb-4">
-                      2025 – Present
-                    </p>
-
-                    <ul className="list-disc ml-6 space-y-2 text-sm md:text-base leading-relaxed">
-                      <li>
-                        Designed modern, minimal UI for creative websites using
-                        Figma and Tailwind.
-                      </li>
-                      <li>
-                        Collaborated with clients to deliver mobile-responsive
-                        and performance-optimized UIs.
-                      </li>
-                      <li>
-                        Integrated NextUI and animation libraries to enhance
-                        interactivity and visual polish.
-                      </li>
-                    </ul>
-                  </div>
+                <p className="text-sm uppercase tracking-[0.22em] text-[#f3dbc7]">{group.title}</p>
+                <div className="mt-5 flex flex-wrap gap-2 sm:mt-6 sm:gap-2.5">
+                  {group.items.map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-white/78 sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.14em]"
+                    >
+                      {item}
+                    </span>
+                  ))}
                 </div>
-              </FadeInSection>
+              </div>
+            ))}
+          </div>
+        </section>
 
-              {/* 6: Contact */}
-              <FadeInSection
-                id="contact"
-                className="grid grid-cols-1 lg:grid-cols-3 gap-6 px-4 sm:px-6 md:px-12 py-12"
+        <ProjectsSection />
+
+        <section id="experience" className="reveal-section mx-auto max-w-7xl px-4 py-20 sm:py-24 md:px-8">
+          <div className="reveal-item mb-10 flex items-center gap-3 sm:mb-12 sm:gap-4">
+            <BriefcaseBusiness className="h-6 w-6 text-[#f3dbc7]" />
+            <h2 className="font-drukXXCondTrial text-4xl uppercase leading-none text-white sm:text-5xl md:text-7xl">
+              Experience
+            </h2>
+          </div>
+
+          <div className="grid gap-6">
+            {experience.map((item) => (
+              <div
+                key={`${item.company}-${item.role}`}
+                className="reveal-item rounded-[28px] border border-white/10 bg-white/7 p-5 backdrop-blur-xl sm:rounded-[36px] sm:p-7 md:p-9"
               >
-                {/* Title */}
-                <div className="lg:row-span-3 text-[#f5eee6] text-start text-[48px] sm:text-[72px] md:text-[100px] font-drukXXCondTrial uppercase leading-none">
-                  <span className="block">LET&#39;S</span>
-                  <span className="block">CONNECT.</span>
+                <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                  <div>
+                    <p className="text-sm uppercase tracking-[0.24em] text-[#f3dbc7]">{item.period}</p>
+                    <h3 className="mt-3 text-xl font-semibold text-white sm:text-2xl md:text-3xl">{item.role}</h3>
+                    <p className="mt-1 text-sm text-white/70 sm:text-base">{item.company} / {item.location}</p>
+                  </div>
+                  <ArrowUpRight className="h-5 w-5 text-white/45" />
                 </div>
 
-                {/* Buttons + Text */}
-                <div className="lg:col-span-2 lg:row-span-2">
-                  <p className="uppercase text-xl sm:text-2xl md:text-[32px] lg:text-[50px]">
-                    I&#39;m always interested about
-                  </p>
-
-                  {/* Row 1 buttons */}
-                  <div className="flex flex-wrap mt-10 gap-4 sm:gap-5">
-                    {["UI/UX Design", "Frontend Development"].map((label) => (
-                      <MagneticButton key={label}>
-                        <Button className="hover-trigger bg-transparent border-[#f5eee6] border text-[#f5eee6] rounded-full uppercase font-semibold text-sm sm:text-base md:text-xl px-4 py-2 md:px-6 md:py-3">
-                          {label}
-                        </Button>
-                      </MagneticButton>
-                    ))}
-                  </div>
-
-                  {/* Row 2 buttons */}
-                  <div className="flex flex-wrap mt-6 gap-4 sm:gap-5">
-                    {["New Business", "Hangout", "Coffee"].map((label) => (
-                      <MagneticButton key={label}>
-                        <Button className="hover-trigger bg-transparent border-[#f5eee6] border text-[#f5eee6] rounded-full uppercase font-semibold text-sm sm:text-base md:text-xl px-4 py-2 md:px-6 md:py-3">
-                          {label}
-                        </Button>
-                      </MagneticButton>
-                    ))}
-                  </div>
+                <div className="mt-6 grid gap-3 md:mt-8 md:grid-cols-2">
+                  {item.bullets.map((bullet) => (
+                    <div key={bullet} className="rounded-[20px] border border-white/8 bg-black/20 px-4 py-4 text-sm leading-6 text-white/76 sm:rounded-[24px] sm:leading-7">
+                      {bullet}
+                    </div>
+                  ))}
                 </div>
-              </FadeInSection>
-              <ScrollToTop />
-              <Footer />
-            </Scroll>
-          </ScrollControls>
-        </Suspense>
-      </Canvas>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="education" className="reveal-section mx-auto max-w-7xl px-4 py-20 sm:py-24 md:px-8">
+          <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+            <div className="reveal-item rounded-[28px] border border-white/10 bg-black/28 p-6 backdrop-blur-xl sm:rounded-[36px] sm:p-8">
+              <div className="flex items-center gap-3">
+                <GraduationCap className="h-6 w-6 text-[#f3dbc7]" />
+                <p className="text-sm uppercase tracking-[0.24em] text-[#f3dbc7]">Education</p>
+              </div>
+              <h2 className="mt-6 font-drukXXCondTrial text-4xl uppercase leading-none text-white sm:text-5xl md:text-7xl">
+                {education.degree}
+              </h2>
+              <p className="mt-5 text-lg text-white/78 sm:mt-6 sm:text-xl">{education.school}</p>
+              <p className="mt-2 text-xs uppercase tracking-[0.14em] text-white/48 sm:text-sm sm:tracking-[0.18em]">
+                {education.location} / {education.period}
+              </p>
+            </div>
+
+            <div className="grid gap-3 sm:gap-4">
+              {certifications.map((item) => (
+                <div
+                  key={item}
+                  className="reveal-item rounded-[24px] border border-white/10 bg-white/7 px-5 py-4 text-sm text-white/80 backdrop-blur-xl sm:rounded-[28px] sm:px-6 sm:py-5 sm:text-base"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" className="reveal-section mx-auto max-w-7xl px-4 py-20 sm:py-24 md:px-8">
+          <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="reveal-item rounded-[28px] border border-white/10 bg-black/28 p-6 backdrop-blur-xl sm:rounded-[36px] sm:p-8">
+              <p className="text-sm uppercase tracking-[0.24em] text-[#f3dbc7]">Contact</p>
+              <h2 className="mt-4 font-drukXXCondTrial text-4xl uppercase leading-none text-white sm:text-5xl md:text-7xl">
+                Let&apos;s build
+                <span className="block text-[#f3dbc7]">something real.</span>
+              </h2>
+              <p className="mt-5 max-w-lg text-sm leading-7 text-white/72 sm:mt-6 sm:text-base sm:leading-8 md:text-lg">
+                Open to frontend roles, freelance work, and collaborations where product thinking matters as much as implementation quality.
+              </p>
+
+              <div className="mt-8 grid gap-4">
+                <a
+                  href={`mailto:${personalInfo.email}`}
+                  className="hover-trigger rounded-[24px] border border-white/10 bg-white/6 p-4 text-white transition-colors hover:border-white/25 sm:rounded-[28px] sm:p-5"
+                >
+                  <p className="text-xs uppercase tracking-[0.24em] text-[#f3dbc7]">Email</p>
+                  <p className="mt-2 break-all text-base sm:text-lg">{personalInfo.email}</p>
+                </a>
+                <a
+                  href={`tel:${personalInfo.phone.replace(/\s+/g, "")}`}
+                  className="hover-trigger rounded-[24px] border border-white/10 bg-white/6 p-4 text-white transition-colors hover:border-white/25 sm:rounded-[28px] sm:p-5"
+                >
+                  <p className="text-xs uppercase tracking-[0.24em] text-[#f3dbc7]">Phone</p>
+                  <p className="mt-2 text-base sm:text-lg">{personalInfo.phone}</p>
+                </a>
+              </div>
+
+              <div className="mt-6 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
+                {heroHighlights.map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-full border border-white/10 bg-white/6 px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-white/68 sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.16em]"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="reveal-item">
+              <ContactForm />
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </div>
     </>
   );
 }

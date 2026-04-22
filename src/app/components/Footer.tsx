@@ -2,15 +2,30 @@
 
 import { Instagram, Linkedin, Github } from 'lucide-react'
 import Link from 'next/link'
+import { personalInfo } from '../data/portfolio'
 
 export default function Footer() {
   return (
-    <footer className="w-full border-t border-white/10 text-[#f5eee6] px-6 py-8 mt-24">
+    <footer className="mt-20 w-full border-t border-white/10 px-4 py-8 text-[#f5eee6] sm:px-6 md:mt-24">
       <div className="flex flex-col items-center gap-6">
+        <div className="text-center space-y-2">
+          <p className="font-migraExtrabold text-xl">{personalInfo.name}</p>
+          <p className="text-sm text-[#f3dbc7]">{personalInfo.role} based in {personalInfo.location}</p>
+          <div className="flex flex-col text-sm text-white/80 md:flex-row md:items-center md:gap-4">
+            <Link href={`mailto:${personalInfo.email}`} className="break-all hover:text-audi-purple transition-colors">
+              {personalInfo.email}
+            </Link>
+            <span className="hidden md:inline">/</span>
+            <Link href={`tel:${personalInfo.phone.replace(/\s+/g, '')}`} className="hover:text-audi-purple transition-colors">
+              {personalInfo.phone}
+            </Link>
+          </div>
+        </div>
+
         {/* Social Icons */}
-        <div className="flex gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           <Link
-            href="https://github.com/Ranjula001"
+            href={personalInfo.github}
             target="_blank"
             aria-label="GitHub"
             className="hover:text-audi-purple transition-colors hover-trigger"
@@ -18,7 +33,7 @@ export default function Footer() {
             <Github className="w-5 h-5" />
           </Link>
           <Link
-            href="https://www.linkedin.com/in/ranjula-ilukpitiya-95b407226/"
+            href={personalInfo.linkedin}
             target="_blank"
             aria-label="LinkedIn"
             className="hover:text-audi-purple transition-colors hover-trigger"

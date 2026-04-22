@@ -1,38 +1,38 @@
-import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
-import MotionLayout from './components/MotionLayout'   // ⬅️ import wrapper
-import './globals.css'
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import MotionLayout from "./components/MotionLayout";
+import "./globals.css";
 
 const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
 const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-  title: 'Ranjula Ilukpitiya 🍥',
-  description: 'Ranjula Ilukpitiya - portfolio website',
-}
+  title: "Ranjula Ilukpitiya | Junior Developer",
+  description:
+    "Portfolio of Ranjula Ilukpitiya, a junior developer focused on React, Next.js, TypeScript, UI/UX, and modern frontend products.",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-y-scroll`}
+        className={`${geistSans.variable} ${geistMono.variable} overflow-y-scroll antialiased`}
       >
-        {/* wrap ALL routed pages in MotionLayout */}
         <MotionLayout>{children}</MotionLayout>
-
-        <SpeedInsights/>
+        <SpeedInsights />
       </body>
     </html>
-  )
+  );
 }
