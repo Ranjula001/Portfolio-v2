@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bot, BriefcaseBusiness, MessageSquareText, Send, Sparkles, X } from "lucide-react";
+import { BriefcaseBusiness, MessageSquareText, Send, X } from "lucide-react";
 import { cloneAssistant, getCloneReply, type CloneReply } from "../data/cloneChat";
 
 type ChatMessage = {
@@ -87,7 +87,7 @@ export default function PortfolioChatbot() {
           <span className="text-lg">🐕</span>
         </span>
         <span className="hidden text-left md:block">
-          <span className="block text-xs uppercase tracking-[0.2em] text-white/45">Ranjula's Companion</span>
+          <span className="block text-xs uppercase tracking-[0.2em] text-white/45">Ranjula&apos;s Companion</span>
           <span className="block">{cloneAssistant.name}</span>
         </span>
       </button>

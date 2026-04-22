@@ -18,6 +18,7 @@ import {
 import SceneContent from "./SceneContent";
 import ProjectsSection from "./ProjectsSection";
 import Navbar from "./Navbar";
+import Image from "next/image";
 import AnimatedCursor from "./AnimatedCursor";
 import MagneticButton from "./MagneticButton";
 import ScrollProgress from "./ScrollProgress";
@@ -197,11 +198,11 @@ export default function Scene() {
             <div className="order-1 grid gap-3 sm:gap-4 lg:order-2 lg:justify-self-end">
               <div className="parallax-card reveal-item relative overflow-hidden rounded-[28px] border border-white/10 bg-white/7 aspect-[4/5] lg:aspect-[3/4] xl:aspect-[4/5] lg:h-[280px] xl:h-[340px] backdrop-blur-xl sm:rounded-[36px]">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_48%)]" />
-                <img
+                <Image
                   src="/images/graduation-portrait.jpg"
                   alt="Ranjula Ilukpitiya graduation portrait"
                   className="h-full w-full object-cover object-center rounded-[28px] sm:rounded-[36px] cursor-pointer transition-transform duration-300 hover:scale-105"
-                  loading="eager"
+                  priority="high"
                   onMouseEnter={() => {
                   if (hoverTimeoutRef.current) {
                     clearTimeout(hoverTimeoutRef.current);
@@ -214,7 +215,9 @@ export default function Scene() {
                   if (hoverTimeoutRef.current) {
                     clearTimeout(hoverTimeoutRef.current);
                   }
-                  setIsPortraitHovered(false);
+                  hoverTimeoutRef.current = setTimeout(() => {
+                    setIsPortraitHovered(false);
+                  }, 300);
                 }}
                 />
               </div>
@@ -434,10 +437,11 @@ export default function Scene() {
           onMouseLeave={() => setIsPortraitHovered(false)}
         >
           <div className="relative max-w-4xl max-h-[90vh]">
-            <img
+            <Image
               src="/images/graduation-portrait.jpg"
               alt="Ranjula Ilukpitiya graduation portrait"
               className="w-full h-full object-contain rounded-lg shadow-2xl"
+              priority="high"
             />
             <button
               className="absolute -top-4 -right-4 w-8 h-8 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors border-0"

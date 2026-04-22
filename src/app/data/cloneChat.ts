@@ -30,7 +30,6 @@ export const cloneAssistant = {
 const legalFullName =
   "Ilukpitiya Mudiyanselage Don Jananga Ranjula Bandara Ilukpitiya";
 
-const publicInterests = ["Guitar playing", "Basketball", "E-Sports"];
 
 const primaryStack = [
   "React.js",
