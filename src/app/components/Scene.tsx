@@ -1,7 +1,6 @@
 "use client";
 
 import { Suspense, useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { Canvas } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import { Button } from "@nextui-org/react";
@@ -125,9 +124,10 @@ export default function Scene() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(123,97,255,0.18),transparent_28%),radial-gradient(circle_at_80%_20%,rgba(243,219,199,0.18),transparent_26%),linear-gradient(180deg,#07090d_0%,#0b0f17_52%,#090a10_100%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.03)_0%,transparent_24%,transparent_76%,rgba(255,255,255,0.02)_100%)]" />
         <Canvas camera={{ position: [0, 0, 5], fov: 42 }} className="pointer-events-none">
-          <ambientLight intensity={1.15} />
-          <directionalLight position={[2, 4, 5]} intensity={2.2} />
-          <spotLight position={[-3, 5, 4]} intensity={1.4} color="#f3dbc7" />
+          <ambientLight intensity={1.35} />
+          <directionalLight position={[2, 4, 5]} intensity={2.5} />
+          <directionalLight position={[-3, 2, 4]} intensity={1.25} color="#f3dbc7" />
+          <spotLight position={[-3, 5, 4]} intensity={1.6} color="#f3dbc7" />
           <Suspense fallback={null}>
             <SceneContent progress={scrollProgress} />
             <Environment preset="city" />
@@ -138,18 +138,18 @@ export default function Scene() {
       <div ref={containerRef} className="relative z-10">
         <section
           id="hero"
-          className="reveal-section mx-auto flex min-h-screen w-full max-w-7xl flex-col justify-end px-4 pb-12 pt-24 sm:pb-16 sm:pt-28 md:px-8 md:pb-20"
+          className="reveal-section mx-auto flex min-h-[84vh] w-full max-w-[1180px] flex-col justify-center px-4 pb-8 pt-20 sm:min-h-screen sm:pb-12 sm:pt-24 md:px-8 md:pb-14"
         >
-          <div className="grid items-end gap-6 sm:gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="grid items-center gap-6 sm:gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(320px,400px)] xl:grid-cols-[minmax(0,1fr)_minmax(340px,430px)]">
             <div className="reveal-item order-2 lg:order-1">
               <div className="mb-4 inline-flex max-w-full rounded-full border border-white/10 bg-white/6 px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-[#f3dbc7] backdrop-blur-md sm:mb-5 sm:px-4 sm:text-[11px] sm:tracking-[0.26em]">
                 Junior Developer / UI-UX minded frontend builder
               </div>
-              <h1 className="font-drukXXCondTrial text-[52px] uppercase leading-[0.88] text-white sm:text-[84px] md:text-[132px] lg:text-[172px]">
+              <h1 className="font-drukXXCondTrial text-[52px] uppercase leading-[0.88] text-white sm:text-[76px] md:text-[98px] lg:text-[102px] xl:text-[114px] 2xl:text-[126px]">
                 Ranjula
                 <span className="block text-[#f3dbc7]">Ilukpitiya</span>
               </h1>
-              <p className="mt-5 max-w-2xl text-sm leading-7 text-white/75 sm:text-base sm:leading-8 md:mt-6 md:text-xl">
+              <p className="mt-5 max-w-xl text-sm leading-7 text-white/75 sm:text-base sm:leading-8 md:mt-6 md:text-lg lg:max-w-[34rem]">
                 {personalInfo.summary}
               </p>
 
@@ -166,7 +166,7 @@ export default function Scene() {
                 ))}
               </div>
 
-              <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-4">
+              <div className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:gap-4">
                 <MagneticButton>
                   <Button
                     as="a"
@@ -189,32 +189,48 @@ export default function Scene() {
               </div>
             </div>
 
-            <div className="order-1 grid gap-4 sm:gap-5 lg:order-2">
+            <div className="order-1 grid gap-3 sm:gap-4 lg:order-2 lg:justify-self-end">
               <div className="parallax-card reveal-item relative overflow-hidden rounded-[28px] border border-white/10 bg-white/7 p-2.5 backdrop-blur-xl sm:rounded-[36px] sm:p-3">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_48%)]" />
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[28px]">
-                  <Image
+                <div className="relative min-h-[280px] overflow-hidden rounded-[28px] sm:min-h-[360px] lg:min-h-[400px] xl:min-h-[440px]">
+                  <img
                     src="/images/graduation-portrait.jpg"
                     alt="Ranjula Ilukpitiya graduation portrait"
-                    fill
-                    priority
-                    className="object-cover"
+                    className="h-full w-full object-cover object-center"
+                    loading="eager"
                   />
-                  <div className="absolute inset-x-0 bottom-0 bg-[linear-gradient(180deg,transparent_0%,rgba(6,9,14,0.88)_100%)] p-4 sm:p-5">
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-[#f3dbc7] sm:text-xs sm:tracking-[0.24em]">Featured portrait</p>
-                    <p className="mt-2 text-base text-white sm:text-lg">A human-centered portfolio with code, design, and motion in balance.</p>
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,10,16,0.08)_0%,rgba(7,10,16,0.16)_36%,rgba(7,10,16,0.58)_100%)]" />
+                  <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5 lg:right-5 lg:max-w-[210px] xl:max-w-[230px]">
+                    <div className="rounded-[24px] border border-white/10 bg-black/45 p-3.5 shadow-[0_18px_48px_rgba(0,0,0,0.28)] backdrop-blur-xl sm:rounded-[28px] sm:p-4">
+                      <p className="text-[10px] uppercase tracking-[0.18em] text-[#f3dbc7] sm:text-xs sm:tracking-[0.24em] xl:text-sm">
+                        Featured portrait
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-white sm:text-base sm:leading-7 lg:mt-3 lg:text-base xl:text-lg">
+                        A human-centered portfolio with code, design, and motion in balance.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
+              <div className="grid grid-cols-3 gap-3 sm:gap-4">
                 {quickFacts.map((fact) => (
                   <div
                     key={fact.label}
-                    className="reveal-item rounded-[24px] border border-white/10 bg-white/7 p-4 backdrop-blur-xl sm:rounded-[28px] sm:p-5"
+                    className="reveal-item flex min-h-[116px] flex-col rounded-[22px] border border-white/10 bg-white/7 px-4 py-4 text-left backdrop-blur-xl sm:min-h-[130px] sm:rounded-[24px] sm:px-4 sm:py-5 lg:min-h-[146px] lg:px-5 lg:py-5 xl:min-h-[158px] xl:px-5 xl:py-6"
                   >
-                    <p className="font-drukXXCondTrial text-3xl uppercase text-white sm:text-4xl md:text-5xl">{fact.value}</p>
-                    <p className="mt-2 text-xs uppercase tracking-[0.14em] text-white/55 sm:text-sm sm:tracking-[0.18em]">{fact.label}</p>
+                    <p
+                      className="font-drukXXCondTrial uppercase leading-none text-white"
+                      style={{ fontSize: "clamp(2.1rem, 1.1rem + 2vw, 3.5rem)" }}
+                    >
+                      {fact.value}
+                    </p>
+                    <p
+                      className="mt-auto pt-5 uppercase tracking-[0.12em] text-white/55 lg:pt-6"
+                      style={{ fontSize: "clamp(0.62rem, 0.52rem + 0.22vw, 0.8rem)", lineHeight: 1.5 }}
+                    >
+                      {fact.label}
+                    </p>
                   </div>
                 ))}
               </div>

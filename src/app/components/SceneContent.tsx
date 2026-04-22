@@ -15,10 +15,10 @@ export default function SceneContent({ progress }: SceneContentProps) {
   useFrame((_, delta) => {
     if (!group.current) return
 
-    const targetRotationY = Math.PI / 2 + progress * Math.PI * 1.35
-    const targetRotationX = Math.sin(progress * Math.PI) * 0.18
-    const targetY = 0.8 - progress * 2.6
-    const targetX = Math.sin(progress * Math.PI * 2) * 0.35
+    const targetRotationY = Math.PI / 2 + progress * Math.PI * 1.08
+    const targetRotationX = Math.sin(progress * Math.PI) * 0.12
+    const targetY = -0.28 - progress * 1.95
+    const targetX = 0.18 + Math.sin(progress * Math.PI * 1.35) * 0.16
 
     group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, targetRotationY, delta * 2.5)
     group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, targetRotationX, delta * 1.8)
@@ -28,7 +28,7 @@ export default function SceneContent({ progress }: SceneContentProps) {
 
   return (
     <group ref={group}>
-      <Model scale={0.1} position={[0, -0.4, 0]} />
+      <Model scale={0.108} position={[0.08, -0.34, -0.15]} />
     </group>
   )
 }
