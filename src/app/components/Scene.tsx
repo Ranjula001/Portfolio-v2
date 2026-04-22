@@ -201,6 +201,8 @@ export default function Scene() {
                 <Image
                   src="/images/graduation-portrait.jpg"
                   alt="Ranjula Ilukpitiya graduation portrait"
+                  width={400}
+                  height={400}
                   className="h-full w-full object-cover object-center rounded-[28px] sm:rounded-[36px] cursor-pointer transition-transform duration-300 hover:scale-105"
                   priority="high"
                   onMouseEnter={() => {

@@ -3,7 +3,7 @@ export const projects = [
     title: "9Tailed ERP Systems",
     description:
       "Multi-tenant SaaS platform for hospitality businesses with booking, billing, RBAC, dashboards, and secure organization-scoped data.",
-    image: "/images/bimbara.png",
+    image: "/images/9tailsERP.png",
     url: "",
     stack: ["Next.js", "React", "TypeScript", "Supabase", "Zustand"],
     category: "Multi-Tenant SaaS Platform",
@@ -12,8 +12,8 @@ export const projects = [
     title: "PortfolioCraft",
     description:
       "No-code portfolio builder with drag-and-drop editing, theme controls, export features, and an AI assistant for portfolio copy.",
-    image: "/images/vibe.png",
-    url: "",
+    image: "/images/PortfolioBuilder.png",
+    url: "https://portfoliomaker-live.lovable.app/",
     stack: ["React", "@dnd-kit", "html2canvas", "jsPDF", "AI Assistant"],
     category: "No-Code Portfolio Builder",
   },
