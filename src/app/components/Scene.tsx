@@ -204,7 +204,7 @@ export default function Scene() {
                   width={400}
                   height={400}
                   className="h-full w-full object-cover object-center rounded-[28px] sm:rounded-[36px] cursor-pointer transition-transform duration-300 hover:scale-105"
-                  priority="high"
+                  priority={true}
                   onMouseEnter={() => {
                   if (hoverTimeoutRef.current) {
                     clearTimeout(hoverTimeoutRef.current);
@@ -443,7 +443,7 @@ export default function Scene() {
               src="/images/graduation-portrait.jpg"
               alt="Ranjula Ilukpitiya graduation portrait"
               className="w-full h-full object-contain rounded-lg shadow-2xl"
-              priority="high"
+              priority={true}
             />
             <button
               className="absolute -top-4 -right-4 w-8 h-8 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors border-0"
