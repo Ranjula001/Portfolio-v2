@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import SceneContent from "./SceneContent";
 import ProjectsSection from "./ProjectsSection";
-import Loader from "./Loader";
 import Navbar from "./Navbar";
 import AnimatedCursor from "./AnimatedCursor";
 import MagneticButton from "./MagneticButton";
@@ -26,6 +25,7 @@ import ScrollToTop from "./ScrollToTop";
 import Footer from "./Footer";
 import CommandMenu from "./CommandMenu";
 import ContactForm from "./ContactForm";
+import PortfolioChatbot from "./PortfolioChatbot";
 import {
   certifications,
   education,
@@ -42,6 +42,8 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 export default function Scene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isPortraitHovered, setIsPortraitHovered] = useState(false);
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const updateScroll = () => {
@@ -56,6 +58,9 @@ export default function Scene() {
     return () => {
       window.removeEventListener("scroll", updateScroll);
       window.removeEventListener("resize", updateScroll);
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
     };
   }, []);
 
@@ -117,7 +122,7 @@ export default function Scene() {
       <ScrollProgress />
       <Navbar />
       <CommandMenu />
-      <Loader />
+      <PortfolioChatbot />
       <ScrollToTop />
 
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
@@ -190,27 +195,28 @@ export default function Scene() {
             </div>
 
             <div className="order-1 grid gap-3 sm:gap-4 lg:order-2 lg:justify-self-end">
-              <div className="parallax-card reveal-item relative overflow-hidden rounded-[28px] border border-white/10 bg-white/7 p-2.5 backdrop-blur-xl sm:rounded-[36px] sm:p-3">
+              <div className="parallax-card reveal-item relative overflow-hidden rounded-[28px] border border-white/10 bg-white/7 aspect-[4/5] lg:aspect-[3/4] xl:aspect-[4/5] lg:h-[280px] xl:h-[340px] backdrop-blur-xl sm:rounded-[36px]">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_48%)]" />
-                <div className="relative min-h-[280px] overflow-hidden rounded-[28px] sm:min-h-[360px] lg:min-h-[400px] xl:min-h-[440px]">
-                  <img
-                    src="/images/graduation-portrait.jpg"
-                    alt="Ranjula Ilukpitiya graduation portrait"
-                    className="h-full w-full object-cover object-center"
-                    loading="eager"
-                  />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,10,16,0.08)_0%,rgba(7,10,16,0.16)_36%,rgba(7,10,16,0.58)_100%)]" />
-                  <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5 lg:right-5 lg:max-w-[210px] xl:max-w-[230px]">
-                    <div className="rounded-[24px] border border-white/10 bg-black/45 p-3.5 shadow-[0_18px_48px_rgba(0,0,0,0.28)] backdrop-blur-xl sm:rounded-[28px] sm:p-4">
-                      <p className="text-[10px] uppercase tracking-[0.18em] text-[#f3dbc7] sm:text-xs sm:tracking-[0.24em] xl:text-sm">
-                        Featured portrait
-                      </p>
-                      <p className="mt-2 text-sm leading-6 text-white sm:text-base sm:leading-7 lg:mt-3 lg:text-base xl:text-lg">
-                        A human-centered portfolio with code, design, and motion in balance.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <img
+                  src="/images/graduation-portrait.jpg"
+                  alt="Ranjula Ilukpitiya graduation portrait"
+                  className="h-full w-full object-cover object-center rounded-[28px] sm:rounded-[36px] cursor-pointer transition-transform duration-300 hover:scale-105"
+                  loading="eager"
+                  onMouseEnter={() => {
+                  if (hoverTimeoutRef.current) {
+                    clearTimeout(hoverTimeoutRef.current);
+                  }
+                  hoverTimeoutRef.current = setTimeout(() => {
+                    setIsPortraitHovered(true);
+                  }, 300);
+                }}
+                onMouseLeave={() => {
+                  if (hoverTimeoutRef.current) {
+                    clearTimeout(hoverTimeoutRef.current);
+                  }
+                  setIsPortraitHovered(false);
+                }}
+                />
               </div>
 
               <div className="grid grid-cols-3 gap-3 sm:gap-4">
@@ -221,13 +227,13 @@ export default function Scene() {
                   >
                     <p
                       className="font-drukXXCondTrial uppercase leading-none text-white"
-                      style={{ fontSize: "clamp(2.1rem, 1.1rem + 2vw, 3.5rem)" }}
+                      style={{ fontSize: "clamp(1.5rem, 0.8rem + 1.5vw, 2.5rem)" }}
                     >
                       {fact.value}
                     </p>
                     <p
-                      className="mt-auto pt-5 uppercase tracking-[0.12em] text-white/55 lg:pt-6"
-                      style={{ fontSize: "clamp(0.62rem, 0.52rem + 0.22vw, 0.8rem)", lineHeight: 1.5 }}
+                      className="mt-auto pt-4 uppercase tracking-[0.12em] text-white/55 lg:pt-5"
+                      style={{ fontSize: "clamp(0.56rem, 0.48rem + 0.18vw, 0.72rem)", lineHeight: 1.4 }}
                     >
                       {fact.label}
                     </p>
@@ -420,6 +426,28 @@ export default function Scene() {
 
         <Footer />
       </div>
+
+      {/* Portrait Preview Popup */}
+      {isPortraitHovered && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onMouseLeave={() => setIsPortraitHovered(false)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh]">
+            <img
+              src="/images/graduation-portrait.jpg"
+              alt="Ranjula Ilukpitiya graduation portrait"
+              className="w-full h-full object-contain rounded-lg shadow-2xl"
+            />
+            <button
+              className="absolute -top-4 -right-4 w-8 h-8 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors border-0"
+              onClick={() => setIsPortraitHovered(false)}
+            >
+              <span className="text-white text-xl">×</span>
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
