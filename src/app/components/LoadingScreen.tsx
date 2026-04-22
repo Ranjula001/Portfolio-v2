@@ -5,6 +5,7 @@ import { Canvas } from '@react-three/fiber'
 import { useFrame } from '@react-three/fiber'
 import { useGLTF, SpotLight } from '@react-three/drei'
 import { memo } from 'react'
+import * as THREE from 'three'
 
 interface CoinProps {
   position?: [number, number, number]
